@@ -1,0 +1,20 @@
+%!TEX TS-program = xelatex
+\documentclass[12pt]{article}
+\usepackage{newicktree}
+
+\usepackage{xltxtra}
+\setmainfont[Mapping=tex-text]{Minion Pro}
+\setsansfont{Myriad Pro}
+
+\begin{document}
+\begin{newicktree}  
+    \righttree
+    \setunitlength{1.25cm}
+    \unitbranchlengths
+    \nonodemarkers
+    \contemporarytips[20]
+    \nodelabelformat{\bfseries \itshape \sffamily}
+    \nodeseparation{1.5em}
+    \drawtree{(((((S. cerevisiae, S. paradoxus), S. mikatae), S. kudriavzevii),S. bayanus), S. castellii);}
+\end{newicktree}
+\end{document}
