@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+
+\usepackage{MinionPro}
+\usepackage{MnSymbol}
+
+\makeatletter
+\newcommand{\superimpose}[2]{%
+  {\ooalign{$#1\@firstoftwo#2$\cr\hfil$#1\@secondoftwo#2$\hfil\cr}}}
+\makeatother
+\newcommand{\GE}{\mathpalette\superimpose{{G}{E}}}
+
+\newcommand\opn{\mathrel{\ooalign{{G}\cr
+  \hidewidth\raise.1ex{E}}}}
+  
+%\newcommand{\GNP}{{\ooalign{\raisebox{1ex}{G}\cr
+%  \hidewidth\raisebox{-1ex}{E}}}}
+
+%\newcommand{\GNP}{\ensuremath{\ooalign{\raisebox{1ex}{$G$}\cr
+%  \hidewidth\raisebox{-1ex}{$E$}}}}
+
+% see
+% http://tex.stackexchange.com/questions/22371/subseteq-circ-as-a-single-symbol-open-subset/22375
+% for an explanation of ooalign
+
+\newcommand{\GP}{\ensuremath{\ooalign{\raisebox{1ex}{$G$}\cr\hidewidth\raisebox{-1ex}{$E$}}}
+{\ooalign{\raisebox{0.85ex}{${\scriptstyle\searrow}$}\cr\hidewidth\raisebox{-0.5ex}{${\mkern1mu\scriptstyle\nearrow}$}  }  }}
+
+
+\newcommand{\GTP}{\ensuremath{\ooalign{\raisebox{1ex}{$G$}\cr\hidewidth\raisebox{-1ex}{$E$}}}\!\ensuremath{{{\scriptstyle\searrow}\atop{\scriptstyle\nearrow}}}}
+
+\newcommand{\GoverE}{\ensuremath{\ooalign{\raisebox{0.9ex}{$G$}\cr\hidewidth\raisebox{-0.9ex}{$E$}}}}
+
+\newcommand{\OUarrow}{\ensuremath{
+\ooalign{%
+\raisebox{0.75ex}{${\scriptstyle\searrow}$}\cr\raisebox{-0.65ex}{${\scriptstyle\nearrow}$}%
+}%
+}%
+}
+
+\newcommand{\GENP}{\GoverE\OUarrow\ensuremath{N\!\to\!P}}
+
+\newcommand{\NOE}{\ensuremath{\ooalign{\hfil$N$\hfil\cr\hfil\raisebox{-2ex}{$\uparrow$}\hfil\cr\hfil\raisebox{-4.1ex}{$E$}\cr}}}
+
+\newcommand{\EON}{\ensuremath{\ooalign{\hfil$N$\hfil\cr\hfil\raisebox{2ex}{$\downarrow$}\hfil\cr\hfil\raisebox{4.1ex}{$E$}\cr}}}
+
+
+\begin{document}
+
+\section*{Using various TeX/LaTeX macros}
+
+\GENP\ is easy.
+
+\[
+{G}\to\NOE\to{P}
+\]
+That looks good, doesn't it! The E over N version seems to require a medskip:
+\medskip
+
+\[
+{G}\to\EON\to{P}
+\]
+
+
+\section*{Using substack}
+
+The genotype-network-phenotype mapping is:    
+\[
+\substack{G\rightarrow\\E\rightarrow}N \rightarrow P
+\]    
+And here it is inline -- $\substack{G\rightarrow\\E\rightarrow}N \rightarrow P$. And now inline with \verb|\textstyle| G and E -- $\substack{{\textstyle G}\searrow\\ {\textstyle E}\nearrow}N \to P$.
+This also uses substack, but with N as a \verb|\mathop{}|: $G \rightarrow \mathop{N}_{\substack{\uparrow\\E}} \rightarrow P$? 
+
+    
+\section*{Using genfrac}    
+Here's another way to represent it, using the \verb|genfrac| command from \verb|amsmath|.
+\[
+G \rightarrow \mathop{N}_{\genfrac{}{}{0pt}{0}{\uparrow}{E}} \rightarrow P
+\]
+This is also using \verb|genfrac| but with the E on top:
+\[
+G \rightarrow \mathop{N}^{\genfrac{}{}{0pt}{0}{E}{\downarrow}} \rightarrow P
+\]
+The problem with genfrac is that it doesn't produce a very nice looking inline version -- \(G \rightarrow \mathop{N}_{\genfrac{}{}{0pt}{0}{\uparrow}{E}} \rightarrow P\)?
+
+\section*{Using atop}
+
+Display style atop:
+\[
+{G \atop E} \to N \to P
+\]
+And here it is inline -- \( {G \atop E} \to N \to P \). This also uses \verb|atop| but uses a double arrow symbol from the MnSymbol package -- \( {G \atop E} \rightrightarrows N \to P \). And now with squiggly arrows and \verb|\textstyle| G and E.  -- \( {{\textstyle G} \atop {\textstyle E}} {\selsquigarrow \atop \nersquigarrow} N \to P \)
+
+This is \verb|atop| as well, but using script style arrows:
+\[
+{G \atop E} {{\scriptstyle \searrow} \atop {\scriptstyle \nearrow}} N \to P
+\]
+Here's another way to represent it using atop:
+\[
+    G \rightarrow \mathop{N}_{\displaystyle {\uparrow \atop E}} \rightarrow P
+\]
+
+\section*{Using atop with sideset}
+Here's some more takes using \verb|\atop| in combination with \verb|\sideset{}|:
+\[
+{\sideset{}{_{\searrow}}{\mathop{G}} \atop \sideset{}{^{\nearrow}}{\mathop{E}}}  N \to P
+\]
+And the inline version -- \(
+{\sideset{}{_{\searrow}}{\mathop{G}} \atop \sideset{}{^{\nearrow}}{\mathop{E}}}\!N\!\to\!P
+\). Followed by more text, how does it effect the interline spacing?  Does it make things look funny?  Well, does it?
+
+
+\[
+{{\textstyle G} \atop {\textstyle E}} {\searrow \atop \nearrow} N \to P
+\]
+And inline it looks like: \(
+{{\textstyle G} \atop {\textstyle E}} {\searrow \atop \nearrow} N \to P
+\)
+
+And the inline version -- \(
+{\sideset{}{_{\searrow}}{\mathop{\textstyle G}} \atop \sideset{}{^{\nearrow}}{\mathop{\textstyle E}}}\!N\!\to\!P
+\).
+
+%$\sideset{}{_{\searrow}}{\substack{{\textstyle G} \\ {\textstyle E}}} N \to P$.
+
+
+% Here's some rlap magic: \rlap{\raisebox{1ex}{G}}{\raisebox{-1ex}{E}}
+% 
+% \makebox[0pt][c]{\raisebox{1ex}{G}\hspace*{-0.5em}\raisebox{-1ex}{E}}
+% 
+% $\GE$
+
+% \def\clap#1{\hbox to 0pt{\hss#1\hss}}
+% 
+% Here's some clap magic: \clap{\raisebox{1ex}{G}}{\raisebox{-1ex}{E}}
+
+% \GNP $\to\!N\!\to\!P$
+% 
+% \GP
+% 
+% \GTP
+
+\end{document}
